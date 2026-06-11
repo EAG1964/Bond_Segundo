@@ -190,7 +190,7 @@
             min-height: 0 !important;
         }
         #input-area {
-            max-height: 305px !important;
+            max-height: 365px !important;
             overflow-y: auto !important;
         }
         .licencia-bloque {
@@ -202,7 +202,7 @@
         /* Didactic microscopic 3D model */
         .micro3d-card {
             width: 100%;
-            max-width: 520px;
+            max-width: 610px;
             background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #cbd5e1;
             border-radius: 1rem;
@@ -224,7 +224,7 @@
         }
         .micro3d-svg {
             width: 100%;
-            max-height: 290px;
+            max-height: 350px;
             overflow: visible;
         }
         .micro3d-vibrate { animation: microVibrate 1.25s ease-in-out infinite alternate; transform-origin: center; }
@@ -287,7 +287,7 @@
         }
         #micro3d-three-container {
             width: 100%;
-            height: 315px;
+            height: 455px;
             border-radius: 0.75rem;
             overflow: hidden;
             background: #0a1128;
@@ -460,7 +460,7 @@
                     <div class="flex justify-between items-center">
                         <h2 class="text-xl font-semibold text-slate-700">Work Board</h2>
                         <div class="flex space-x-2">
-                            <button onclick="resetCurrentSimulation()" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold py-1 px-3 rounded-full transition-colors border border-amber-300 shadow-sm flex items-center" title="Restart el par actual desde cero">
+                            <button onclick="resetCurrentSimulation()" class="text-sm bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold py-1 px-3 rounded-full transition-colors border border-amber-300 shadow-sm flex items-center" title="Restart the current pair desde cero">
                                 <i class="fas fa-undo mr-1"></i> Restart
                             </button>
                             <button onclick="initSimulation()" class="text-sm bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold py-1 px-3 rounded-full transition-colors border border-indigo-300 shadow-sm flex items-center" title="Generate a new random pair of elements">
@@ -508,7 +508,7 @@
     </main>
 
     <script>
-        // --- GESTIÓN DE TIMEOUTS SEGUROS ---
+        // --- SAFE TIMEOUT MANAGEMENT ---
         let activeTimeouts = [];
         
         function safeSetTimeout(callback, delay) {
@@ -693,11 +693,11 @@
         const ionicNonMetalsArray = allElementsArray.filter(e => e.type === 'nonmetal' && nmRoots[e.sym]);
 
         metalsArray.forEach(m => {
-            scenarios.push({ e1: m.sym, e2: m.sym, type: 'metallic', c1: 1, c2: 0, form: m.sym, desc: `${m.name} metal` });
+            scenarios.push({ e1: m.sym, e2: m.sym, type: 'metallic', c1: 1, c2: 0, form: m.sym, desc: `${m.name}` });
         });
 
         nobleGasesArray.forEach(ng => {
-            scenarios.push({ e1: ng.sym, e2: ng.sym, type: 'none', c1: 1, c2: 0, form: ng.sym, desc: `${ng.name} gaseous` });
+            scenarios.push({ e1: ng.sym, e2: ng.sym, type: 'none', c1: 1, c2: 0, form: ng.sym, desc: `${ng.name}` });
         });
 
         metalsArray.forEach(m => {
@@ -717,7 +717,7 @@
             });
         });
 
-        // --- ESTADO DE LA APLICACIÓN ---
+        // --- APPLICATION STATE ---
         let currentScenario = null;
         let currentStepAttempts = 0; 
         let builderState = { 
@@ -737,9 +737,9 @@
             const groups = {
                 'covalent': { label: 'Molecular Covalent Substances', items: [] },
                 'ionic': { label: 'Ionic Compounds', items: [] },
-                'metallic': { label: 'Metals (metallic bond)', items: [] },
-                'none': { label: 'Noble Gases (no bond)', items: [] },
-                'covalent_atomic': { label: 'Network Covalent Solids (Atomic Covalent)', items: [] }
+                'metallic': { label: 'Metals', items: [] },
+                'none': { label: 'Noble gases', items: [] },
+                'covalent_atomic': { label: 'Atomic covalent substances', items: [] }
             };
 
             scenarios.forEach((sc, index) => {
@@ -925,7 +925,7 @@
             }, 1000);
         }
 
-        // --- SELECCIÓN DE element type ---
+        // --- ELEMENT TYPE SELECTION ---
         function stepElementType(a1, a2, prev1 = '', prev2 = '') {
             currentStepAttempts = (prev1 === '') ? 0 : currentStepAttempts;
             const isHomo = currentScenario.e1 === currentScenario.e2;
@@ -998,8 +998,8 @@
 
             safeSetTimeout(() => {
                 let errors = [];
-                if (t1 !== a1.type) errors.push(`el <b>${a1.name}</b>`);
-                if (!isHomo && t2 !== a2.type) errors.push(`el <b>${a2.name}</b>`);
+                if (t1 !== a1.type) errors.push(`<b>${a1.name}</b>`);
+                if (!isHomo && t2 !== a2.type) errors.push(`<b>${a2.name}</b>`);
 
                 if (errors.length === 0) {
                     addTutorMessage(`<b class="text-red-600 font-bold">Excellent!</b> You have correctly classified ${isHomo ? 'the element' : 'both elements'}.`);
@@ -1028,7 +1028,7 @@
             }, 800);
         }
 
-        // --- DETERMINAR TIPO DE ENLACE ---
+        // --- DETERMINE BOND TYPE ---
         function stepDetermineBond() {
             currentStepAttempts = 0;
             safeSetTimeout(() => {
@@ -1054,7 +1054,7 @@
             const selectedType = selectEl.value;
 
             if (!selectedType) {
-                addTutorMessage("Please select an option from the drop-down menu before checkinging.");
+                addTutorMessage("Please select an option from the drop-down menu before checking.");
                 return;
             }
 
@@ -1289,7 +1289,7 @@
             const rawUnp2 = isHomo ? rawUnp1 : document.getElementById('unp2').value.trim();
 
             if (!rawP1 || !rawG1 || !rawConf1 || !rawV1 || !rawUnp1 || (!isHomo && (!rawP2 || !rawG2 || !rawConf2 || !rawV2 || !rawUnp2))) {
-                addTutorMessage("Please fill in all fields before checkinging the data.");
+                addTutorMessage("Please fill in all fields before checking the data.");
                 return; 
             }
 
@@ -1544,16 +1544,16 @@
                                 let specificTips = [];
                                 if (isQty1Wrong) {
                                     if (a1.type === 'metal') {
-                                        specificTips.push(`The metal <b>${a1.sym}</b> must lose exactly <b>all</b> its valence electrons (es decir, ${expected1.count} e⁻).`);
+                                        specificTips.push(`The metal <b>${a1.sym}</b> must lose exactly <b>all</b> its valence electrons (that is, ${expected1.count} e⁻).`);
                                     } else {
-                                        specificTips.push(`El nonmetal <b>${a1.sym}</b> debe gain o share la amount exacta de necessary electrons para llegar a 8 (o a 2 in caso del H, Li o Be).`);
+                                        specificTips.push(`The nonmetal <b>${a1.sym}</b> must gain or share the exact number of electrons needed to reach 8 (or 2 for H, Li or Be).`);
                                     }
                                 }
                                 if (isQty2Wrong) {
                                     if (a2.type === 'metal') {
-                                        specificTips.push(`El metal <b>${a2.sym}</b> debe lose exactamente <b>todos</b> sus valence electrons (es decir, ${expected2.count} e⁻).`);
+                                        specificTips.push(`El metal <b>${a2.sym}</b> debe lose exactamente <b>todos</b> sus valence electrons (that is, ${expected2.count} e⁻).`);
                                     } else {
-                                        specificTips.push(`El nonmetal <b>${a2.sym}</b> debe gain o share la amount exacta de necessary electrons para llegar a 8 (o a 2 in caso del H, Li o Be).`);
+                                        specificTips.push(`The nonmetal <b>${a2.sym}</b> must gain or share the exact number of electrons needed to reach 8 (or 2 for H, Li or Be).`);
                                     }
                                 }
                                 hint = `<b>Counting hint:</b><br>${specificTips.join('<br>')}`;
@@ -1749,7 +1749,7 @@
                         addTutorMessage("Knowing that forman lattices infinitas tridimensionales de atoms, how se representa la mínima unit elemental de this substance?");
                     } else {
                         if (isHomo) {
-                            addTutorMessage(`Knowing this, they must bond together to share the necessary electrons.<br><br>How many atoms en total will form the chemical substance?`);
+                            addTutorMessage(`Knowing this, they must bond together to share the necessary electrons.<br><br>How many atoms in total will form the chemical substance?`);
                         } else {
                             addTutorMessage(`Knowing this, they must bond together to share the necessary electrons.<br><br>How many atoms of <b>${a1.sym}</b> and <b>${a2.sym}</b> will form the chemical substance?`);
                         }
@@ -1791,7 +1791,7 @@
             const q2 = isHomo ? 0 : parseInt(document.getElementById('qty2').value || 1);
 
             if (!sym1Raw || (!isHomo && !sym2Raw)) {
-                addTutorMessage("Please fill in the boxes with the chemical symbols before checkinging.");
+                addTutorMessage("Please fill in the boxes with the chemical symbols before checking.");
                 return;
             }
 
@@ -1899,7 +1899,7 @@
                         addTutorMessage(msg);
                         safeSetTimeout(() => proceedToNextStep(correctForm), 2500);
                     } else {
-                        let hint = "Casi. Necesitamos equilibrarlo bien. Try again.";
+                        let hint = "Almost. We need to balance it correctly. Try again.";
                         
                         if (currentStepAttempts === 1) {
                             if (areSymsWrong) {
@@ -1919,11 +1919,11 @@
                                 } else if (isCovalentAtomic) {
                                     hint += "<br><br><b>Hint:</b> Remember that these substances form huge giant lattices, so their formula is simplified to indicate the minimum representative unit.";
                                 } else if (isHomo) {
-                                    hint += "<br><br><b>Hint:</b> Think en cuántos electrons le faltan a uno solo and cuántos pueden aportarse entre ellos para estabilizarse forming un par.";
+                                    hint += "<br><br><b>Hint:</b> Think about how many electrons one atom lacks and how many they can contribute between them to become stable by forming a pair.";
                                 } else if (!isIonic) {
-                                    hint += "<br><br><b>Hint:</b> El atom que needs share <b>menos</b> electrons será el más numeroso.";
+                                    hint += "<br><br><b>Hint:</b> The atom that needs to share <b>fewer</b> electrons will be the more numerous one.";
                                 } else {
-                                    hint += "<br><br><b>Hint:</b> El atom que intercambia <b>menos</b> electrons se needsrá en mayor amount.";
+                                    hint += "<br><br><b>Hint:</b> The atom that exchanges <b>fewer</b> electrons will be needed in the larger amount.";
                                 }
                             }
                         } else if (currentStepAttempts === 2) {
@@ -1944,7 +1944,7 @@
                                 } else if (isCovalentAtomic && isHomo) {
                                     hint += "<br><br><b>Tip:</b> It is written as a chemical symbol, but structurally it is an atomic covalent network, not a metal or a noble gas.";
                                 } else if (isCovalentAtomic && !isHomo) {
-                                    hint += "<br><br><b>Tip:</b> Think en que por cada atom de Silicio (que requiere share 4 electrons) needsremos los correspondientes de Oxygen/Carbono depending on the proportion.";
+                                    hint += "<br><br><b>Tip:</b> Think en que por cada atom of Silicio (que requiere share 4 electrons) needsremos los correspondientes de Oxygen/Carbono depending on the proportion.";
                                 } else if (isHomo) {
                                     hint += "<br><br><b>Tip:</b> The elemental substances of these nonmetals are always diatomic.";
                                 } else {
@@ -2485,9 +2485,9 @@
             if ((scenario.form || '') === 'SiC') {
                 return `
                     <div class="mt-2 max-w-[520px] rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[12px] leading-snug text-slate-700">
-                        <div class="font-bold text-amber-800 mb-1">How interpretar la lattice of ${formatChemicalFormulaHTML('SiC')}</div>
-                        <div>En el carborundo, cada <b>Si</b> se une tetrahedralmente a <b>4 C</b> and cada <b>C</b> se une tetrahedralmente a <b>4 Si</b>.</div>
-                        <div class="mt-1">Therefore la lattice has el <b>same type structurel que el diamond</b> (type zinc blende), pero con <b>dos especies alternadas</b>. La <b>proportion global</b> remains <b>1:1</b>, es decir, <b>SiC</b>.</div>
+                        <div class="font-bold text-amber-800 mb-1">How to interpret the lattice of ${formatChemicalFormulaHTML('SiC')}</div>
+                        <div>In carborundum, each <b>Si</b> is tetrahedrally bonded to <b>4 C</b>, and each <b>C</b> is tetrahedrally bonded to <b>4 Si</b>.</div>
+                        <div class="mt-1">Therefore, the lattice has the <b>same structural type as diamond</b> (zinc blende type), but with <b>two alternating species</b>. The <b>overall proportion</b> remains <b>1:1</b>, that is, <b>SiC</b>.</div>
                     </div>`;
             }
             if ((scenario.form || '') === 'C3N4') {
@@ -2689,37 +2689,47 @@
                 if (!count) return '';
                 const marks = [];
                 if (pos === 'center' || refX === null || refY === null) {
-                    const configs = [
+                    let configs = [
                         { ang: -90, r: 50 },
                         { ang: 0, r: 48 },
                         { ang: 90, r: 48 },
                         { ang: 180, r: 48 }
                     ];
+                    // In bent AX2E2 molecules with O or S as central atom, lone pairs are drawn
+                    // above and away from the bonding pairs, never between the two bonds.
+                    if (data && data.geometry === 'angular' && (b.center === 'O' || b.center === 'S') && count >= 2) {
+                        configs = [
+                            { ang: 135, r: 48 },
+                            { ang: 45, r: 48 },
+                            { ang: 90, r: 54 },
+                            { ang: 180, r: 48 }
+                        ];
+                    }
                     configs.slice(0, count).forEach(cfg => {
                         const rad = cfg.ang * Math.PI / 180;
                         const px = x + cfg.r * Math.cos(rad);
-                        const py = and + cfg.r * Math.sin(rad);
+                        const py = y + cfg.r * Math.sin(rad);
                         marks.push(lonePairMark(px, py, cfg.ang + 90));
                     });
                     return marks.join('');
                 }
 
-                // Lone pairs de atoms extremos: pegados al atom and orientados
-                // around del contorno, evitando el lado del bond.
+                // Lone pairs on terminal atoms: placed close to the atom and oriented
+                // around the contour, avoiding the bond side.
                 const outward = Math.atan2(y - refY, x - refX);
                 let relDegs = [];
                 if (count === 1) relDegs = [0];
                 else if (count === 2) relDegs = [-44, 44];
                 else relDegs = [-56, 0, 56];
 
-                // Radio menor so that queden adosados al atom extremo.
-                // El atom has r≈27; 33-36 px deja el par justo fuera del borde.
+                // Smaller radius so they remain attached to the terminal atom.
+                // The atom radius is about 27 px; 33-36 px leaves the pair just outside the edge.
                 const lpRadius = count >= 3 ? 35 : 34;
 
                 relDegs.slice(0, count).forEach(d => {
                     const ang = outward + d * Math.PI / 180;
                     const px = x + lpRadius * Math.cos(ang);
-                    const py = and + lpRadius * Math.sin(ang);
+                    const py = y + lpRadius * Math.sin(ang);
                     marks.push(lonePairMark(px, py, ang * 180 / Math.PI + 90));
                 });
                 return marks.join('');
@@ -2732,8 +2742,8 @@
                 const len = Math.sqrt(dx * dx + dy * dy) || 1;
                 let startX, startY, endX, endY;
 
-                // En PH3 la diferencia de electronegatividad P-H es mínima and dipolo de bond
-                // debe representarse como muy weak: flecha corta and fina.
+                // In PH3 the P-H electronegativity difference is minimal and the bond dipole
+                // should be shown as very weak: short and thin arrow.
                 if (currentScenario.form === 'PH3') {
                     const ux = dx / len;
                     const uy = dy / len;
@@ -2847,7 +2857,7 @@
             const displayShapeLabel = data.geometry === 'angular'
                 ? (getBentAngleCategory(currentScenario.form) === 'angular_ax2e2' ? 'Bent AX₂E₂' : 'Bent AX₂E₁')
                 : shapeLabels[data.geometry];
-            stageContent.innerHTML = `<div class="fade-in w-full flex flex-col items-center justify-center"><div class="mb-1 text-center"><div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Structure Geometry</div><div class="text-2xl font-extrabold text-indigo-700">${formatChemicalFormulaHTML(currentScenario.form)}</div></div><div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3"><svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width: 420px; height: auto; max-height: 300px;"><defs><marker id="dipoleArrow" markerWidth="5.2" markerHeight="5.2" refX="4.8" refY="2.6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L5.2,2.6 L0,5.2 z" fill="#0f766e"></path></marker><marker id="netDipoleArrow" markerWidth="4.4" markerHeight="4.4" refX="4.0" refY="2.2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L4.4,2.2 L0,4.4 z" fill="#7c3aed"></path></marker></defs>${bonds}${angleMarkup.arc}${bondDipoles}${netDipoleSvg}${atomSvg}${lonePairs}${angleMarkup.label}</svg></div><div class="mt-1.5 text-sm text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-center"><b>${displayShapeLabel}</b> · angle ${displayAngleText}${showDipoles ? '<br><span class="text-teal-700">Teal arrows: bond dipole moments</span>' : ''}${showDipoles && data.moleculePolar ? '<br><span class="text-violet-700 font-bold">Violet arrow: molecular dipole moment</span>' : ''}</div></div>`;
+            stageContent.innerHTML = `<div class="fade-in w-full flex flex-col items-center justify-center"><div class="mb-1 text-center"><div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Structure Geometry</div><div class="text-2xl font-extrabold text-indigo-700">${formatChemicalFormulaHTML(currentScenario.form)}</div></div><div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3"><svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width: 420px; height: auto; max-height: 360px;"><defs><marker id="dipoleArrow" markerWidth="5.2" markerHeight="5.2" refX="4.8" refY="2.6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L5.2,2.6 L0,5.2 z" fill="#0f766e"></path></marker><marker id="netDipoleArrow" markerWidth="4.4" markerHeight="4.4" refX="4.0" refY="2.2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L4.4,2.2 L0,4.4 z" fill="#7c3aed"></path></marker></defs>${bonds}${angleMarkup.arc}${bondDipoles}${netDipoleSvg}${atomSvg}${lonePairs}${angleMarkup.label}</svg></div><div class="mt-1.5 text-sm text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-center"><b>${displayShapeLabel}</b> · angle ${displayAngleText}${showDipoles ? '<br><span class="text-teal-700">Teal arrows: bond dipole moments</span>' : ''}${showDipoles && data.moleculePolar ? '<br><span class="text-violet-700 font-bold">Violet arrow: molecular dipole moment</span>' : ''}</div></div>`;
         }
 
         // --- CÁLCULO DE MASA ATÓMICA O MOLECULAR ---
@@ -2893,7 +2903,7 @@
             const userUnitRaw = document.getElementById('calcUnit').value.trim();
 
             if (!userMassRaw || !userUnitRaw) {
-                addTutorMessage("Please fill in both the mass box and the unit box before checkinging.");
+                addTutorMessage("Please fill in both the mass box and the unit box before checking.");
                 return;
             }
 
@@ -3040,7 +3050,7 @@
                             else if (currentScenario.type === 'metallic') hint = "Remember: metals form solid crystal lattices made of cations immersed in a sea of shared electrons.";
                             else if (currentScenario.type === 'ionic') hint = "Remember: ionic compounds form large, solid, ordered structures of positive and negative charges.";
                             else if (currentScenario.type === 'covalent_atomic') hint = "Remember: El diamond and cuarzo son solids covalent que forman lattices crystalline gigantes donde todos the atoms están bonded por fortísimos covalent bonds.";
-                            else hint = "Remember: La gran mayoría de las substances covalent sencillas forman pequeños groups aislados de atoms bonded entre sí.";
+                            else hint = "Remember: La gran mayoría de las substances covalent sencillas forman pequeños groups aislados de atoms bonded with one another.";
                         }
                         addTutorMessage(`Not exactly. ${hint}`);
                         stepMicroscopicStructure(true); 
@@ -4019,7 +4029,7 @@
                 He: { color: 0xd9ffff, radius: 0.62 }, // cian muy claro
                 Ne: { color: 0x9be7ff, radius: 0.72 }, // azul cielo claro
                 Ar: { color: 0x66d6c9, radius: 0.88 }, // cian verdoso
-                Kr: { color: 0x34b3d1, radius: 0.98 }, // turquesa intenso
+                Kr: { color: 0x34b3d1, radius: 0.98 }, // deep turquoise
                 Xe: { color: 0x2f7f9f, radius: 1.08 }, // azul petróleo
                 Rn: { color: 0x1f5f78, radius: 1.16 }, // azul petróleo oscuro
                 Li: { color: 0x7c3aed, radius: 1.10 },
@@ -4225,7 +4235,7 @@
                 Ba: 'green',
                 Al: 'greyish pink'
             };
-            return names[sym] || 'gris';
+            return names[sym] || 'grey';
         }
 
         function getMicro3DStateText() {
@@ -4292,20 +4302,20 @@
             const cat = getIonicVisualStyle(currentScenario.e1 || 'Na', true);
             const an = getIonicVisualStyle(currentScenario.e2 || 'Cl', false);
             const maxR = Math.max(cat.radius, an.radius);
-            if (maxR >= 1.12) return 1.28;
-            if (maxR >= 1.00) return 1.34;
-            if (maxR >= 0.86) return 1.44;
-            return 1.56;
+            if (maxR >= 1.12) return 1.46;
+            if (maxR >= 1.00) return 1.54;
+            if (maxR >= 0.86) return 1.66;
+            return 1.80;
         }
 
         function getIonicModelCameraRadius() {
             const cat = getIonicVisualStyle(currentScenario.e1 || 'Na', true);
             const an = getIonicVisualStyle(currentScenario.e2 || 'Cl', false);
             const maxR = Math.max(cat.radius, an.radius);
-            if (maxR >= 1.12) return 31.5;
-            if (maxR >= 1.00) return 30.2;
-            if (maxR >= 0.86) return 28.8;
-            return 27.0;
+            if (maxR >= 1.12) return 30.8;
+            if (maxR >= 1.00) return 29.6;
+            if (maxR >= 0.86) return 28.2;
+            return 26.4;
         }
 
         function getElementalIonChargeText(sym, isCation) {
@@ -4604,7 +4614,7 @@
             const selectEl = document.getElementById('micro3dAnswer');
             const answer = selectEl ? selectEl.value : '';
             if (!answer) {
-                addTutorMessage('Select an option before checkinging the 3D model.');
+                addTutorMessage('Select an option before checking the 3D model.');
                 return;
             }
             currentStepAttempts++;
@@ -4620,7 +4630,7 @@
                     showContinueButton('stepFormulaType()', 'Continue with formula type');
                 } else {
                     let hint = 'Observa si las particles se mueven como units separadas, si vibran en una lattice o si son isolated atoms.';
-                    if (currentScenario.type === 'metallic') hint = 'Busca la lattice of atoms metallics and delocalized electrons moviéndose entre ellos.';
+                    if (currentScenario.type === 'metallic') hint = 'Busca the lattice of atoms metallics and delocalized electrons moviéndose entre ellos.';
                     if (currentScenario.type === 'ionic') hint = 'Busca positive and negative ions arranged in a lattice.';
                     if (currentScenario.type === 'covalent_atomic') hint = 'Look for a continuous lattice of covalent bonds, not separate molecules.';
                     if (currentScenario.type === 'covalent') hint = 'Look for complete molecules moving as independent units.';
@@ -4744,7 +4754,7 @@
                             <option value="covalent">Molecular covalent substance</option>
                             <option value="ionic">Ionic substance</option>
                             <option value="metallic">Metallic substance</option>
-                            <option value="covalent_atomic">Substance covalent atomic (giant lattice)</option>
+                            <option value="covalent_atomic">Atomic covalent substance</option>
                         </select>
                         <button onclick="checkSubstanceType()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-1.5 rounded transition-colors font-sans">Check Substance</button>
                     </div>
@@ -5135,7 +5145,7 @@
                         <div class="text-2xl font-extrabold text-indigo-700">${formulaHtml}</div>
                     </div>
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-1.5">
-                        <svg viewBox="0 0 460 240" width="100%" style="max-width: 420px; height: auto; max-height: 300px;">
+                        <svg viewBox="0 0 460 240" width="100%" style="max-width: 420px; height: auto; max-height: 360px;">
                             <defs>
                                 <marker id="netDipoleArrowSmall" markerWidth="4.2" markerHeight="4.2" refX="3.9" refY="2.1" orient="auto" markerUnits="strokeWidth">
                                     <path d="M0,0 L4.2,2.1 L0,4.2 z" fill="#7c3aed"></path>
@@ -5232,7 +5242,7 @@
             const bondPolarity = document.getElementById('bondPolarity').value;
             const moleculePolarity = document.getElementById('moleculePolarity').value;
             if (!bondPolarity || !moleculePolarity) {
-                addTutorMessage("Please complete both polarity sections before checkinging.");
+                addTutorMessage("Please complete both polarity sections before checking.");
                 return;
             }
 
@@ -5562,6 +5572,7 @@
                             <select id="prop_therm" class="border border-slate-300 rounded p-1.5 bg-white outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 shadow-sm cursor-pointer">
                                 <option value="">Select the general rule...</option>
                                 <option value="mala">Poor (thermal insulator)</option>
+                                <option value="media_baja">Medium-low</option>
                                 <option value="excelente">Excellent (good thermal conductor)</option>
                                 <option value="excepcional">Exceptionally high</option>
                             </select>
@@ -5649,7 +5660,7 @@
                 tough = 'fragil';
                 duct = 'zero';
                 hard = 'muy_duro';
-                therm = 'excepcional';
+                therm = sc.form === 'SiO2' ? 'media_baja' : 'excepcional';
                 optic = 'adamantino';
             } else if (type === 'ionic') { 
                 state = 'Solid'; 
@@ -5744,7 +5755,7 @@
             const optic = opticSelect ? opticSelect.value : '';
             
             if (!state || !mb || !condS || !condL || !solW || !solA || !tough || !duct || !hard || !therm || !optic) {
-                addTutorMessage("Please select an answer in every drop-down menu before checkinging.");
+                addTutorMessage("Please select an answer in every drop-down menu before checking.");
                 return;
             }
 
@@ -5843,7 +5854,7 @@
                             }
                             if (errors.includes("Toughness") || errors.includes("Hardness") || errors.includes("Ductility and Malleability")) {
                                 if (type === 'ionic') helperHint += "• <b>Mechanical hint:</b> Imagina la alternating lattice of charges + and -. Si la impactas o intentas deformarla, one layer moves and charges of the same sign face each other. Exactly, se repelerán and cristal estallará! Por tanto, no se deforman plásticamente (ductility zero) and quiebran al instante (brittle).<br>";
-                                else if (type === 'metallic') helperHint += "• <b>Mechanical hint:</b> Metals hasn un sea of electrons libre que actúa como un pegamento flexible. Si los impactas (impacto) resisten sin romperse (tenaces), and si los estiras o aplastas, se adaptan a la nueva forma sin que la lattice se rompa (altamente ductile and malleable).<br>";
+                                else if (type === 'metallic') helperHint += "• <b>Mechanical hint:</b> Metals hasn un sea of electrons libre que actúa como un pegamento flexible. Si los impactas (impacto) resisten sin romperse (tenaces), and si los estiras o aplastas, se adaptan a la nueva forma sin que the lattice se rompa (altamente ductile and malleable).<br>";
                                 else if (type === 'covalent_atomic') helperHint += "• <b>Mechanical hint:</b> Las atomic lattices gigantes como el diamond son las más duras, pero sus bonds son fijos and ultra-rigid. If a strong sharp impact is applied, they cannot absorb the energy and they break (brittle). Of course, they also cannot be drawn into wires (zero ductility).<br>";
                                 else helperHint += "• <b>Mechanical hint:</b> Small molecules are held together by weak forces, so in the solid state they do not withstand impacts (brittle) and cannot be stretched (zero ductility). In the gas or liquid state, these properties do not apply.<br>";
                             }
@@ -5993,8 +6004,8 @@
             safeSetTimeout(() => {
                 if (ok) {
                     const intro = kind === 'phase'
-                        ? 'Correct! For melting or boiling this substance must be overcome ese type of interaction o bond.'
-                        : 'Correct! To scratch the solid se altera localmente ese same type of interaction o bond que keeps bonded its particles.';
+                        ? 'Correct! For melting or boiling, that type of interaction or bond must be overcome.'
+                        : 'Correct! To scratch the solid, the same type of interaction or bond that holds its particles together is locally disrupted.';
                     addTutorMessage(`<b class="text-red-600 font-bold">${intro}</b> ${force.explanation}`);
                     if (kind === 'phase') {
                         safeSetTimeout(() => stepForcesToScratch(), 1400);
@@ -6455,6 +6466,7 @@
 
             let expectedValueThermText = '';
             if (qualExpected.therm === 'mala') expectedValueThermText = currentScenario.type === 'ionic' ? 'Poor to moderate (insulator)' : 'Poor (thermal insulator)';
+            else if (qualExpected.therm === 'media_baja') expectedValueThermText = 'Medium-low';
             else if (qualExpected.therm === 'excelente') expectedValueThermText = 'Excellent thermal conductor';
             else if (qualExpected.therm === 'excepcional') expectedValueThermText = 'Exceptionally high (rigid lattice)';
 
@@ -6528,12 +6540,12 @@
                 let e2Need = a2.sym === 'H' ? 1 : (8 - a2.val);
                 if (isHomo) {
                     reasoning = `
-                        <div><span class="font-bold">${a1.sym}</span> (Z=${a1.z}): ➔ <span class="font-mono">${a1.conf}</span> ➔ Cada atom de ${a1.sym} has ${getUnpairedSafe(a1)} unpaired e⁻. Necesitan share ${e1Need} e⁻ para estabilizarse.</div>
+                        <div><span class="font-bold">${a1.sym}</span> (Z=${a1.z}): ➔ <span class="font-mono">${a1.conf}</span> ➔ Each ${a1.sym} atom has ${getUnpairedSafe(a1)} unpaired e⁻. They need to share ${e1Need} e⁻ to become stable.</div>
                     `;
                 } else {
                     reasoning = `
-                        <div class="mb-1"><span class="font-bold">${a1.sym}</span> (Z=${a1.z}): ➔ <span class="font-mono">${a1.conf}</span> ➔ Necesita share ${e1Need} e⁻.</div>
-                        <div><span class="font-bold">${a2.sym}</span> (Z=${a2.z}): ➔ <span class="font-mono">${a2.conf}</span> ➔ Necesita share ${e2Need} e⁻.</div>
+                        <div class="mb-1"><span class="font-bold">${a1.sym}</span> (Z=${a1.z}): ➔ <span class="font-mono">${a1.conf}</span> ➔ Needs to share ${e1Need} e⁻.</div>
+                        <div><span class="font-bold">${a2.sym}</span> (Z=${a2.z}): ➔ <span class="font-mono">${a2.conf}</span> ➔ Needs to share ${e2Need} e⁻.</div>
                     `;
                 }
             }
@@ -6568,7 +6580,7 @@
                 visualBlock = generateStaticLewisHTML(currentScenario);
                 visualBlock += `<div class="text-[11px] text-slate-500 mt-1.5 italic text-center max-w-sm">Las líneas discontinuouss indican que the bonds continúan hacia otros atoms, forming una lattice infinita hiperstable.</div>`;
             } else if (isIonic) {
-                visualTitle = 'Ions que forman la lattice:';
+                visualTitle = 'Ions que forman the lattice:';
                 let e1Change = a1.val;
                 let e2Need = a2.sym === 'H' ? 1 : 8 - a2.val;
                 let ion1 = `${a1.sym}<sup>${e1Change === 1 ? '+' : e1Change + '+'}</sup>`;
