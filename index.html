@@ -6394,7 +6394,35 @@
                 </div>
             `;
 
-            const data = images[f];
+            let data = images[f];
+
+            // If a substance has no specific assigned photo, use a validated representative image
+            // so that the "image not assigned" placeholder does not appear.
+            if (!data) {
+                if (sc.type === 'none') {
+                    data = { url: IMG.gas_cylinders, label: `Representative noble gas image (${sc.form || sc.e1})` };
+                } else if (sc.type === 'metallic') {
+                    const metalImages = {
+                        Al: { url: IMG.aluminum, label: 'Aluminium metal' },
+                        Mg: { url: IMG.magnesium, label: 'Magnesium metal' },
+                        Na: { url: IMG.sodium, label: 'Sodium metal' },
+                        Li: { url: IMG.lithium, label: 'Lithium metal' },
+                        Ca: { url: IMG.calcium, label: 'Calcium metal' }
+                    };
+                    data = metalImages[sc.form] || { url: IMG.aluminum, label: `Representative metal sample (${sc.form || sc.e1})` };
+                } else if (sc.type === 'ionic') {
+                    const anion = sc.e2 || '';
+                    const ionicImg = anion === 'F' ? IMG.fluorite : (anion === 'Cl' ? IMG.halite : IMG.mgcl2);
+                    data = { url: ionicImg, label: `Representative ionic crystal (${formatChemicalFormulaHTML(sc.form || '')})` };
+                } else if (sc.type === 'covalent_atomic') {
+                    data = { url: IMG.quartz, label: `Representative covalent crystal (${formatChemicalFormulaHTML(sc.form || '')})` };
+                } else if (sc.type === 'covalent') {
+                    const ph = getMolecularPhysicalStateRT(sc);
+                    if (ph === 'gas') data = { url: IMG.gas_cylinders, label: `Representative molecular gas (${formatChemicalFormulaHTML(sc.form || '')})` };
+                    else if (ph === 'liquid') data = { url: IMG.chem_lab_bottles, label: `Representative molecular liquid (${formatChemicalFormulaHTML(sc.form || '')})` };
+                    else data = { url: IMG.chem_bottles, label: `Representative molecular solid (${formatChemicalFormulaHTML(sc.form || '')})` };
+                }
+            }
 
             if (data && data.url) {
                 return `
